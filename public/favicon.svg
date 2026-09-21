@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <defs>
+    <!-- Outer Sweep Gradient -->
+    <linearGradient id="daxiraOuter" x1="20%" y1="0%" x2="90%" y2="80%">
+      <stop offset="0%" stop-color="#0052cc" />
+      <stop offset="35%" stop-color="#0077ff" />
+      <stop offset="70%" stop-color="#00b0ff" />
+      <stop offset="100%" stop-color="#0066ff" />
+    </linearGradient>
+
+    <!-- Inner 3D Fold Shadow Gradient -->
+    <linearGradient id="daxiraInner" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#04183d" />
+      <stop offset="50%" stop-color="#072b6b" />
+      <stop offset="100%" stop-color="#0055d4" />
+    </linearGradient>
+
+    <!-- Pixel / Tech Block Gradient -->
+    <linearGradient id="daxiraPixel" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0099ff" />
+      <stop offset="100%" stop-color="#00d2ff" />
+    </linearGradient>
+    
+    <!-- Dark Spine Gradient -->
+    <linearGradient id="daxiraSpine" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06225a" />
+      <stop offset="100%" stop-color="#031336" />
+    </linearGradient>
+  </defs>
+
+  <!-- Digital Tech Pixel Cascade -->
+  <rect x="36" y="32" width="16" height="16" rx="2" fill="#0055d4" />
+  <rect x="58" y="44" width="17" height="17" rx="2" fill="#0080ff" />
+  <rect x="38" y="62" width="17" height="17" rx="2" fill="#0066e0" />
+  <rect x="62" y="70" width="18" height="18" rx="2.5" fill="url(#daxiraPixel)" />
+  <rect x="78" y="50" width="18" height="18" rx="2.5" fill="url(#daxiraPixel)" />
+
+  <!-- Lower Left Digital Spine Pillar -->
+  <path d="M78 88 L104 114 L104 162 L78 162 Z" fill="url(#daxiraSpine)" />
+
+  <!-- Inner 3D Shadow Fold of the D -->
+  <path d="M80 26 C105 18 135 35 150 62 C134 68 118 84 104 114 L80 26 Z" fill="url(#daxiraInner)" />
+
+  <!-- Main Sweeping Outer D Ribbon -->
+  <path d="M80 26 C115 16 172 45 174 104 C176 148 138 164 104 162 L104 140 C128 140 152 130 150 102 C148 76 116 54 96 52 L80 26 Z" fill="url(#daxiraOuter)" />
+
+  <!-- Lower Inward Ribbon Crease -->
+  <path d="M104 162 C132 162 168 146 166 104 C158 132 132 144 104 140 Z" fill="#0048c2" opacity="0.85" />
+</svg>
