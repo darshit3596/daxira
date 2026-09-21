@@ -427,8 +427,22 @@ export const adminService = {
   },
 
   async createInquiry(payload: Omit<Inquiry, 'id' | 'created_at' | 'status'>): Promise<Inquiry> {
+    const sanitizedName = (payload.name || '').trim().slice(0, 150);
+    const sanitizedBusiness = payload.business ? payload.business.trim().slice(0, 200) : '';
+    const sanitizedEmail = (payload.email || '').trim().toLowerCase().slice(0, 255);
+    const sanitizedPhone = (payload.phone || '').trim().slice(0, 40);
+    const sanitizedService = (payload.service || 'commercial_web').trim().slice(0, 80);
+    const sanitizedBudget = (payload.budget || 'growth').trim().slice(0, 50);
+    const sanitizedMessage = (payload.message || '').trim().slice(0, 5000);
+
     const newInquiry: Inquiry = {
-      ...payload,
+      name: sanitizedName,
+      business: sanitizedBusiness,
+      email: sanitizedEmail,
+      phone: sanitizedPhone,
+      service: sanitizedService,
+      budget: sanitizedBudget,
+      message: sanitizedMessage,
       id: isSupabaseConfigured ? undefined as unknown as string : `inq-${Date.now()}`,
       status: 'New',
       created_at: new Date().toISOString(),
@@ -440,13 +454,13 @@ export const adminService = {
           .from('inquiries')
           .insert([
             {
-              name: payload.name,
-              business: payload.business,
-              email: payload.email,
-              phone: payload.phone,
-              service: payload.service,
-              budget: payload.budget,
-              message: payload.message,
+              name: sanitizedName,
+              business: sanitizedBusiness,
+              email: sanitizedEmail,
+              phone: sanitizedPhone,
+              service: sanitizedService,
+              budget: sanitizedBudget,
+              message: sanitizedMessage,
               status: 'New',
             },
           ])

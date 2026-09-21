@@ -1,0 +1,23 @@
+{
+  "name": "Daxira InfoTech — Modern Websites & Web Applications",
+  "short_name": "Daxira InfoTech",
+  "description": "Fast, modern websites, e-commerce stores, and custom software for growing businesses by Darshit Sapariya.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#faf9fd",
+  "theme_color": "#4f47e6",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

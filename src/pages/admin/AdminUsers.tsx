@@ -70,6 +70,10 @@ export function AdminUsers() {
 
   const handleCreateAdmin = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!password || password.length < 8) {
+      showToast('error', 'Password Required', 'Admin password must be at least 8 characters long');
+      return;
+    }
     setIsSaving(true);
 
     try {
@@ -77,7 +81,7 @@ export function AdminUsers() {
         // Sign up new user via Supabase Auth
         const { data: authData, error: authError } = await supabase.auth.signUp({
           email,
-          password: password || 'Daxira@Admin2026',
+          password: password,
           options: {
             data: { full_name: fullName },
           },

@@ -42,8 +42,9 @@ export const Header: React.FC<HeaderProps> = ({ onSelectScope }) => {
       <div className="max-w-[1280px] mx-auto px-6 h-16 flex items-center justify-between">
         {/* Brand Wordmark & Location Beacon */}
         <a
-          href="#"
+          href="/"
           id="brandLogo"
+          aria-label="Daxira InfoTech — Home"
           className="flex items-center gap-3.5 group"
           onClick={(e) => {
             e.preventDefault();
@@ -57,7 +58,7 @@ export const Header: React.FC<HeaderProps> = ({ onSelectScope }) => {
         </a>
 
         {/* Minimal Editorial Nav Links */}
-        <nav className="hidden md:flex items-center gap-7 text-[13.5px] font-medium text-[#4a4d57]">
+        <nav aria-label="Main Navigation" className="hidden md:flex items-center gap-7 text-[13.5px] font-medium text-[#4a4d57]">
           {[
             { href: '#services', label: 'Services' },
             { href: '#work', label: 'Our Work' },

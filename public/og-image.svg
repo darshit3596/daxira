@@ -1,0 +1,69 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background with subtle gradient -->
+  <rect width="1200" height="630" fill="#FAF9FD"/>
+  <rect width="1200" height="630" fill="url(#bg_pattern)" opacity="0.4"/>
+
+  <!-- Glow Accents -->
+  <circle cx="1050" cy="150" r="300" fill="#4F47E6" opacity="0.08" filter="blur(80px)"/>
+  <circle cx="150" cy="500" r="250" fill="#10B981" opacity="0.06" filter="blur(80px)"/>
+
+  <defs>
+    <pattern id="bg_pattern" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#E2E4EA" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4F47E6"/>
+      <stop offset="100%" stop-color="#3527CE"/>
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Container Box -->
+  <rect x="80" y="75" width="1040" height="480" rx="24" fill="#FFFFFF" stroke="#E2E4EA" stroke-width="2"/>
+
+  <!-- Inner Top Badge -->
+  <g transform="translate(140, 135)">
+    <rect width="320" height="36" rx="8" fill="#FAF9FD" stroke="#E2E4EA"/>
+    <circle cx="20" cy="18" r="4" fill="#10B981"/>
+    <text x="34" y="23" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#4F47E6" letter-spacing="1.5">DAXIRA INFOTECH • GUJARAT, IN</text>
+  </g>
+
+  <!-- Main Heading -->
+  <text x="140" y="240" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-size="48" font-weight="800" fill="#191A20" letter-spacing="-1">
+    Fast, Modern Websites &amp;
+  </text>
+  <text x="140" y="300" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-size="48" font-weight="800" fill="#4F47E6" letter-spacing="-1">
+    Custom Web Applications
+  </text>
+
+  <!-- Description -->
+  <text x="140" y="360" font-family="'Inter', system-ui, -apple-system, sans-serif" font-size="20" font-weight="400" fill="#4A4D57">
+    Custom business websites, e-commerce stores, and software built with Python, Django &amp; React.
+  </text>
+  <text x="140" y="395" font-family="'Inter', system-ui, -apple-system, sans-serif" font-size="20" font-weight="400" fill="#4A4D57">
+    Work directly with developer Darshit Sapariya • Clear pricing from ₹4,000 • Fast delivery.
+  </text>
+
+  <!-- Footer Pillars inside Card -->
+  <g transform="translate(140, 450)">
+    <!-- Pillar 1 -->
+    <rect x="0" y="0" width="240" height="48" rx="8" fill="#FAF9FD" stroke="#E2E4EA"/>
+    <text x="20" y="30" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="14" font-weight="700" fill="#191A20">Direct Developer Contact</text>
+
+    <!-- Pillar 2 -->
+    <rect x="260" y="0" width="220" height="48" rx="8" fill="#FAF9FD" stroke="#E2E4EA"/>
+    <text x="280" y="30" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="14" font-weight="700" fill="#10B981">&lt; 1s Mobile Speed</text>
+
+    <!-- Pillar 3 -->
+    <rect x="500" y="0" width="260" height="48" rx="8" fill="#FAF9FD" stroke="#E2E4EA"/>
+    <text x="520" y="30" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="14" font-weight="700" fill="#4F47E6">Fixed Upfront Pricing</text>
+  </g>
+
+  <!-- Domain Branding -->
+  <text x="1000" y="525" text-anchor="end" font-family="'JetBrains Mono', monospace" font-size="15" font-weight="600" fill="#777587">
+    https://daxirainfo.site
+  </text>
+</svg>

@@ -28,6 +28,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [copiedSpec, setCopiedSpec] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [honeypot, setHoneypot] = useState('');
+  const [lastSubmitTime, setLastSubmitTime] = useState(0);
 
   useEffect(() => {
     if (selectedScope) {
@@ -66,24 +69,66 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage(null);
+
+    // 1. Anti-spam honeypot verification
+    if (honeypot.trim().length > 0) {
+      // Silently pretend success to mislead spam bots without inserting into database
+      setIsSubmitted(true);
+      return;
+    }
+
+    // 2. Client-side throttling / rate limiting (minimum 5s between submissions)
+    const now = Date.now();
+    if (now - lastSubmitTime < 5000) {
+      setErrorMessage('Please wait a few seconds before submitting another inquiry.');
+      return;
+    }
+
+    // 3. Strict Input Validation
+    const cleanName = formData.name.trim().slice(0, 150);
+    const cleanEmail = formData.email.trim().toLowerCase().slice(0, 255);
+    const cleanPhone = formData.phone.trim().slice(0, 40);
+    const cleanBusiness = formData.businessName ? formData.businessName.trim().slice(0, 200) : '';
+    const cleanDetails = (formData.details || '').trim().slice(0, 3000);
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(cleanEmail)) {
+      setErrorMessage('Please provide a valid email address.');
+      return;
+    }
+
+    if (cleanPhone.length < 7) {
+      setErrorMessage('Please provide a valid phone or WhatsApp number.');
+      return;
+    }
+
+    if (cleanName.length < 2) {
+      setErrorMessage('Please provide your name.');
+      return;
+    }
+
     setIsSubmitting(true);
+    setLastSubmitTime(now);
 
     try {
       await adminService.createInquiry({
-        name: formData.name,
-        business: formData.businessName,
-        email: formData.email,
-        phone: formData.phone,
+        name: cleanName,
+        business: cleanBusiness,
+        email: cleanEmail,
+        phone: cleanPhone,
         service: formData.scope,
         budget: formData.budget,
-        message: formData.details || 'Consultation request submitted from website contact form.',
+        message: cleanDetails || 'Consultation request submitted from website contact form.',
       });
+      setIsSubmitted(true);
     } catch (err) {
+      // Safe, sanitized error message without leaking internal database error
       console.warn('Could not record inquiry in background:', err);
+      setErrorMessage('There was a temporary issue saving your inquiry. You can still message Darshit directly on WhatsApp!');
+    } finally {
+      setIsSubmitting(false);
     }
-
-    setIsSubmitting(false);
-    setIsSubmitted(true);
   };
 
   const getScopeLabel = (scope: string) => {
@@ -416,6 +461,26 @@ Details: ${formData.details}`;
                       className="w-full rounded-md border border-[#e2e4ea] bg-[#faf9fd] text-[#191a20] text-[14px] px-3.5 py-2.5 focus:border-[#4f47e6] focus:bg-white focus:ring-1 focus:ring-[#4f47e6] outline-none transition-colors"
                     ></textarea>
                   </div>
+
+                  {/* Hidden Anti-Spam Honeypot Field (invisible to humans) */}
+                  <div style={{ display: 'none' }} aria-hidden="true">
+                    <label htmlFor="website_hp">Leave this field blank</label>
+                    <input
+                      type="text"
+                      id="website_hp"
+                      name="website_hp"
+                      value={honeypot}
+                      onChange={(e) => setHoneypot(e.target.value)}
+                      tabIndex={-1}
+                      autoComplete="off"
+                    />
+                  </div>
+
+                  {errorMessage && (
+                    <div className="p-3.5 rounded-md bg-[#fef2f2] border border-[#fecaca] text-[#b91c1c] text-[13px] leading-relaxed">
+                      {errorMessage}
+                    </div>
+                  )}
 
                   <div className="pt-2">
                     <motion.button

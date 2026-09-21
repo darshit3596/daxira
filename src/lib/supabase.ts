@@ -1,8 +1,15 @@
 import { createClient } from '@supabase/supabase-js';
 
 const rawUrl = import.meta.env.VITE_SUPABASE_URL || '';
-// Clean URL by stripping trailing slashes or /rest/v1
-const supabaseUrl = rawUrl.replace(/\/rest\/v1\/?$/, '').replace(/\/+$/, '');
+// Clean URL by stripping trailing slashes or /rest/v1 and ensuring https:// protocol
+const cleanedUrl = rawUrl.replace(/\/rest\/v1\/?$/, '').replace(/\/+$/, '').trim();
+const supabaseUrl = cleanedUrl
+  ? cleanedUrl.startsWith('http://')
+    ? cleanedUrl.replace(/^http:\/\//, 'https://')
+    : cleanedUrl.startsWith('https://')
+      ? cleanedUrl
+      : `https://${cleanedUrl}`
+  : '';
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
 export const isSupabaseConfigured = Boolean(

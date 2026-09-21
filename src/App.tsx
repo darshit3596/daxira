@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+
+// SEO & Metadata Manager
+import { SEO } from './components/SEO.tsx';
 
 // Context Providers
 import { AuthProvider } from './context/AuthContext.tsx';
 import { ToastProvider } from './components/admin/ToastNotification.tsx';
 import { ProtectedRoute } from './components/admin/ProtectedRoute.tsx';
 
-// Public Website Components (100% Intact & Untouched)
+// Public Website Components (100% Intact & Untouched Design)
 import { Header } from './components/Header.tsx';
 import { Hero } from './components/Hero.tsx';
 import { EthosSection } from './components/EthosSection.tsx';
@@ -32,12 +35,102 @@ import { ActivityLogs } from './pages/admin/ActivityLogs.tsx';
 import { Settings } from './pages/admin/Settings.tsx';
 
 /**
+ * Route-specific SEO Metadata Configurations
+ */
+const ROUTE_SEO: Record<string, { title: string; description: string; canonical: string; targetId?: string }> = {
+  '/': {
+    title: 'Daxira InfoTech — Custom Websites & Web Development in Gujarat, India',
+    description: 'Fast, mobile-friendly websites, online stores, and custom software for businesses in Gujarat, Ahmedabad, and worldwide. Work directly with developer Darshit Sapariya with clear fixed pricing from ₹4,000.',
+    canonical: 'https://daxirainfo.site/',
+    targetId: 'topNav',
+  },
+  '/services': {
+    title: 'Web Development Services & Solutions | Daxira InfoTech',
+    description: 'Custom business websites, e-commerce stores with UPI payments, custom web applications, and website speed optimization in Gujarat, India.',
+    canonical: 'https://daxirainfo.site/services',
+    targetId: 'services',
+  },
+  '/projects': {
+    title: 'Delivered Client Projects & Case Studies | Daxira InfoTech',
+    description: 'Explore custom software and websites built and delivered for clients by Daxira InfoTech, including retail POS and billing systems.',
+    canonical: 'https://daxirainfo.site/projects',
+    targetId: 'work',
+  },
+  '/work': {
+    title: 'Delivered Client Projects & Case Studies | Daxira InfoTech',
+    description: 'Explore custom software and websites built and delivered for clients by Daxira InfoTech, including retail POS and billing systems.',
+    canonical: 'https://daxirainfo.site/projects',
+    targetId: 'work',
+  },
+  '/why-us': {
+    title: 'Why Work With Daxira InfoTech | Direct Developer Access',
+    description: 'No salespeople, no junior handoffs. Speak directly with developer Darshit Sapariya for custom, fast, and secure business websites.',
+    canonical: 'https://daxirainfo.site/why-us',
+    targetId: 'ethos',
+  },
+  '/ethos': {
+    title: 'Why Work With Daxira InfoTech | Direct Developer Access',
+    description: 'No salespeople, no junior handoffs. Speak directly with developer Darshit Sapariya for custom, fast, and secure business websites.',
+    canonical: 'https://daxirainfo.site/why-us',
+    targetId: 'ethos',
+  },
+  '/how-we-work': {
+    title: 'Our 5-Step Web Development Process | Daxira InfoTech',
+    description: 'Simple 5-stage website sprint: Free discussion, design layout, coding, speed testing, and turnkey launch with 30 days free support.',
+    canonical: 'https://daxirainfo.site/how-we-work',
+    targetId: 'process',
+  },
+  '/process': {
+    title: 'Our 5-Step Web Development Process | Daxira InfoTech',
+    description: 'Simple 5-stage website sprint: Free discussion, design layout, coding, speed testing, and turnkey launch with 30 days free support.',
+    canonical: 'https://daxirainfo.site/how-we-work',
+    targetId: 'process',
+  },
+  '/pricing': {
+    title: 'Transparent Website Development Pricing & Packages | Daxira InfoTech',
+    description: 'Clear, upfront website development pricing. Business websites from ₹4,000, online stores from ₹11,000, and custom web apps from ₹18,000.',
+    canonical: 'https://daxirainfo.site/pricing',
+    targetId: 'pricing',
+  },
+  '/faq': {
+    title: 'Website Development FAQ & Answers | Daxira InfoTech',
+    description: 'Frequently asked questions about website costs, development timelines, domain & hosting setup, mobile usability, and post-launch support.',
+    canonical: 'https://daxirainfo.site/faq',
+    targetId: 'faq',
+  },
+  '/contact': {
+    title: 'Get a Free Website Quote & Consultation | Daxira InfoTech',
+    description: 'Get in touch with Darshit Sapariya at Daxira InfoTech for a free quote on your business website, online store, or custom software.',
+    canonical: 'https://daxirainfo.site/contact',
+    targetId: 'contact',
+  },
+};
+
+/**
  * Public Landing Page Component
  * Preserves the exact design, layout, animations, and state flow of Daxira InfoTech.
  */
 function PublicWebsite() {
+  const location = useLocation();
   const [selectedScope, setSelectedScope] = useState<string>('commercial_web');
   const [selectedBudget, setSelectedBudget] = useState<string>('growth');
+
+  const normalizedPath = location.pathname.replace(/\/+$/, '') || '/';
+  const seoConfig = ROUTE_SEO[normalizedPath] || ROUTE_SEO['/'];
+
+  // Smooth scroll to targeted section when navigating directly to a route
+  useEffect(() => {
+    if (seoConfig.targetId && normalizedPath !== '/') {
+      const el = document.getElementById(seoConfig.targetId);
+      if (el) {
+        // Small timeout allows DOM layout to stabilize
+        const timer = setTimeout(() => {
+          el.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [normalizedPath, seoConfig.targetId]);
 
   const handleSelectScope = (scope: string, budget?: string) => {
     setSelectedScope(scope);
@@ -57,6 +150,13 @@ function PublicWebsite() {
 
   return (
     <div className="bg-[#faf9fd] text-[#191a20] font-body antialiased min-h-screen flex flex-col selection:bg-[#4f47e6] selection:text-white">
+      {/* Dynamic SEO Meta Tags for Current Public Route */}
+      <SEO
+        title={seoConfig.title}
+        description={seoConfig.description}
+        canonicalUrl={seoConfig.canonical}
+      />
+
       {/* 1. ARCHITECTURAL TOP NAVIGATION */}
       <Header onSelectScope={handleSelectScope} />
 
@@ -111,13 +211,31 @@ export default function App() {
       <AuthProvider>
         <ToastProvider>
           <Routes>
-            {/* PUBLIC WEBSITE ROUTE */}
+            {/* PUBLIC WEBSITE ROUTES */}
             <Route path="/" element={<PublicWebsite />} />
+            <Route path="/services" element={<PublicWebsite />} />
+            <Route path="/projects" element={<PublicWebsite />} />
+            <Route path="/work" element={<PublicWebsite />} />
+            <Route path="/why-us" element={<PublicWebsite />} />
+            <Route path="/ethos" element={<PublicWebsite />} />
+            <Route path="/how-we-work" element={<PublicWebsite />} />
+            <Route path="/process" element={<PublicWebsite />} />
+            <Route path="/pricing" element={<PublicWebsite />} />
+            <Route path="/faq" element={<PublicWebsite />} />
+            <Route path="/contact" element={<PublicWebsite />} />
 
-            {/* ADMIN AUTHENTICATION */}
-            <Route path="/admin/login" element={<Login />} />
+            {/* ADMIN AUTHENTICATION (NOINDEX) */}
+            <Route
+              path="/admin/login"
+              element={
+                <>
+                  <SEO title="Admin Login | Daxira InfoTech" noindex={true} />
+                  <Login />
+                </>
+              }
+            />
 
-            {/* ADMIN PROTECTED ROUTES */}
+            {/* ADMIN PROTECTED ROUTES (NOINDEX) */}
             <Route
               path="/admin"
               element={
@@ -130,6 +248,7 @@ export default function App() {
               path="/admin/dashboard"
               element={
                 <ProtectedRoute>
+                  <SEO title="Admin Dashboard | Daxira InfoTech" noindex={true} />
                   <Dashboard />
                 </ProtectedRoute>
               }
@@ -138,6 +257,7 @@ export default function App() {
               path="/admin/inquiries"
               element={
                 <ProtectedRoute>
+                  <SEO title="Inquiries Management | Daxira InfoTech" noindex={true} />
                   <Inquiries />
                 </ProtectedRoute>
               }
@@ -146,6 +266,7 @@ export default function App() {
               path="/admin/faqs"
               element={
                 <ProtectedRoute>
+                  <SEO title="FAQs Management | Daxira InfoTech" noindex={true} />
                   <Faqs />
                 </ProtectedRoute>
               }
@@ -154,6 +275,7 @@ export default function App() {
               path="/admin/pricing"
               element={
                 <ProtectedRoute>
+                  <SEO title="Pricing Management | Daxira InfoTech" noindex={true} />
                   <Pricing />
                 </ProtectedRoute>
               }
@@ -162,6 +284,7 @@ export default function App() {
               path="/admin/projects"
               element={
                 <ProtectedRoute>
+                  <SEO title="Projects Management | Daxira InfoTech" noindex={true} />
                   <Projects />
                 </ProtectedRoute>
               }
@@ -170,6 +293,7 @@ export default function App() {
               path="/admin/admin-users"
               element={
                 <ProtectedRoute superAdminOnly={true}>
+                  <SEO title="Admin Users | Daxira InfoTech" noindex={true} />
                   <AdminUsers />
                 </ProtectedRoute>
               }
@@ -178,6 +302,7 @@ export default function App() {
               path="/admin/activity-logs"
               element={
                 <ProtectedRoute>
+                  <SEO title="Activity Logs | Daxira InfoTech" noindex={true} />
                   <ActivityLogs />
                 </ProtectedRoute>
               }
@@ -186,6 +311,7 @@ export default function App() {
               path="/admin/settings"
               element={
                 <ProtectedRoute>
+                  <SEO title="Admin Settings | Daxira InfoTech" noindex={true} />
                   <Settings />
                 </ProtectedRoute>
               }
